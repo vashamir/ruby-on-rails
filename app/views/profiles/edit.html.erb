@@ -1,0 +1,24 @@
+<h2> Редактирование профиля</h2>
+
+<%= form_for :profile, url: profile_path(@profile), method: :patch do |f|%>
+        <%if(@profile.errors.any?)%>
+            <%@profile.errors.full_messages.each do |msg|%>
+                <div class="alert alert-danger">
+                    <%= msg%>
+                </div>
+            <%end%>
+        <%end%>
+        <div class="mb-2">
+            <div class="mb-2">Никнейм:</div>
+            <%# <%= text_field_tag :title, "@{recipe.title}", class: 'form-control' %> 
+            <%# <%= f.text_field(:nickname, {:class => 'form-control'}) %> 
+             <%= text_field_tag :nickname, "#{@profile.nickname}", class: 'form-control' %> 
+        </div>
+        <div class="mb-4">
+            <div class="mb-2">О себе:</div>
+            <%# <%= text_field_tag :recipe, "recipe.receipe_text", class: 'form-control' %> 
+            <%# <%= f.text_area(:about_me, {:class => 'form-control'}) %> 
+             <%= text_area_tag :about_me, "#{@profile.about_me}", class: 'form-control' %> 
+        </div>
+        <%= submit_tag "Сохранить", class: "btn btn-success" %>
+    <%end%>

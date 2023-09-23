@@ -1,0 +1,32 @@
+<h1>Изменение рецепта</h1>
+    
+
+    <div class="container">
+        <div class="col-md-9" style="border-right: 1px solid #C6C7C8; padding-right:15px;">
+            <%= form_for :recipe, url: recipe_path(@recipe), html: {multipart: true}, method: :patch do |f|%>
+                <%if(@recipe.errors.any?)%>
+                    <%@recipe.errors.messages.each do |msg|%>
+                        <div class="alert alert-danger">
+                            <%= msg[1][0]%>
+                        </div>
+                    <%end%>
+                <%end%>                
+                <div class="mb-2">
+                    <div class="mb-2">Название:</div>
+                    <%= text_field_tag :title, "#{@recipe.title}", class: 'form-control' %> 
+                    <%# <%= f.text_field(:title, {:class => 'form-control'}) %> 
+                </div>
+                <p> <%= image_tag @recipe.image.url(:large), class: 'img-show' if @recipe.image? %> </p>
+                <%= file_field_tag :image %>
+                <div class="mb-4">
+                    <div class="mb-2">Рецепт:</div>
+                    <%= text_area_tag :receipe_text, "#{@recipe.receipe_text}", class: 'form-control' %> 
+                    <%# <%= f.text_area(:receipe_text, {:class => 'form-control'}) %> 
+                </div>
+                
+                <%= submit_tag "Изменить", class: "btn btn-success" %>
+            <%end%>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+

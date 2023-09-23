@@ -1,0 +1,84 @@
+ <div class="container">
+    <div class="row">
+        <div class="col-md-9" style="border-right: 1px solid #C6C7C8; padding-right:15px;">
+            <h1> <%= @recipe.title%> </h1>
+            <small> 
+                <%= link_to "#{User.find(@recipe.user_id).email}", profile_path(User.find(@recipe.user_id)), class: "a"%> , 
+                        <time><%= @recipe.created_at.to_date.strftime("%d %B, %Y") %> </time>
+                        <br>
+                        <% if (current_user)%>
+                            <% if (current_user.id == @recipe.user_id)%>
+                                <div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 40px">
+                                    <%= link_to "Редактировать", edit_recipe_path(@recipe), class: "btn btn-outline-success"%>
+                                    <%= button_to "Удалить рецепт", recipe_path(@recipe), method: :delete, class: "btn btn-outline-danger"%>
+                                </div>
+                                <br>
+                            <%end%>
+                        <%end%>
+            </small> 
+            <p> <%= image_tag @recipe.image.url, class: 'img-show w-100' if @recipe.image? %> </p>
+            <div style="overflow: clip;">
+                <p> <%= @recipe.receipe_text%> </p>
+            </div>
+            
+
+            <h4>Комментарии:</h4>
+                <hr>
+                <h5>Добавить комментарий </h5>
+                    <%if(current_user)%>
+                        <%= form_for([@recipe, @recipe.comments.build]) do |f|%>
+                            <div class="mb-4"> 
+                                <%= text_area_tag :body, "", class: 'form-control' %>
+                            </div>
+                            <%= submit_tag "Добавить", class: "btn btn-success" %> 
+                        <%end%>
+                    <%else%>
+                        <a>Чтобы добавить комментарий нужно</a> <%= link_to "авторизиваться", new_user_session_path%>
+                    <%end%>
+                </hr>
+                <hr>
+                    <h4>Все комментарии </h4>
+                    
+                        <% @recipe.comments.each do |comment| %>
+                            <div class="alert alert-light">
+                                <p> <strong> 
+                                    <%if(comment.user_id)%>
+                                        <%if(User.find(comment.user_id).nickname)%> 
+                                            <%= User.find(comment.user_id).nickname%>, <time><%= comment.created_at.to_date.strftime("%d %B, %Y") %> </time>:
+                                        <%else%>
+                                            <%= User.find(comment.user_id).email%>, <time><%= comment.created_at.to_date.strftime("%d %B, %Y") %> </time>:
+                                        <%end%> 
+                                    <%end%> 
+                                </strong>
+                                    <%= comment.body%>
+                                </p>
+                            </div>
+                            <%# <%if(comment.user_id == current_user.id)%> 
+                                <%# <%= button_to "Удалить комментарий", recipe_comment_path(comment), method: :delete, class: "btn btn-danger" %> 
+                            <%# <%end%> 
+                        <% end%>
+                </hr>
+        </div>
+        <div class="col-md-3"> 
+        </div>
+    </div>
+</div>
+
+<%# <script>
+    const buttons = document.querySelector("[data-carousel-button]")
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            const offset = button.dataset.carouselButton === "next" ? 1 : -1
+            const slides = button.closest("[data-carousel").querySelector("[data-slides")
+
+            const activeSlide = slides.querySelector("[data-active")
+            let newIndex = [...slides.children].indexOf(activeSlide) + offset
+            if(newIndex < 0) newIndex = slides.children.length - 1
+            if(newIndex >= slides.children.length) newIndex = 0
+
+            slides.children[newIndex].dataset.active = true
+            delete activeSlide.dataset.active
+        })
+    })
+</script> %>

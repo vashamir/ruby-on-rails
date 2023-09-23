@@ -1,0 +1,30 @@
+<h1 style="margin-bottom: 30px">Добавить рецепт</h1>
+    
+
+    <div class="container">
+        <div class="col-md-9" style="border-right: 1px solid #C6C7C8; padding-right:15px;">
+            <%= form_for :recipe, html: {multipart: true}, url: recipes_path do |f|%>
+                <%if @recipe.errors.any?%>
+                        <%@recipe.errors.messages.each do |msg|%>
+                            <div class="alert alert-danger">
+                                <%= msg [1][0]%>
+                            </div>
+                        <%end%>
+                <%end%>  
+                <div class="mb-2">
+                    <div class="mb-2">Название:</div>
+                     <%= text_field_tag :title, "", class: 'form-control' %>
+                </div>
+                <div class="mb-4">
+                    <div class="mb-2">Рецепт:</div>
+                    <%= text_area_tag :recipe, "", class: 'form-control' %>
+                </div>
+                    <%# <button type="button" class="btn btn-outline-success">Добавить изображения</button> %>
+                 <%= file_field_tag :image %>
+                <%= submit_tag "Добавить рецепт", class: "btn btn-success" %>
+            <%end%>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+    

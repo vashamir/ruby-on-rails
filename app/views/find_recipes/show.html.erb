@@ -1,0 +1,28 @@
+<div class="container"><h2>Найденные рецепты:</h2> </div>
+<div class = "container">
+    <div class="row">
+    <%if(@recipes).count > 0%>
+        <% @recipes.each do |recipe| %>
+                <div class = "col-md-4 text-left my-4">
+                    <%=link_to recipe_path(recipe) do%>
+                        <%= image_tag recipe.image.url(:thumb), class: 'img-show w-100' if recipe.image? %>
+                    <%end%>
+                    <%= link_to "#{recipe.title}", recipe_path(recipe), class: "a"%>
+                    <br>
+                    <small> Автор: 
+                    <%if(User.find(recipe.user_id).nickname)%>
+                        <%=link_to "#{User.find(recipe.user_id).nickname}", profile_path(User.find(recipe.user_id)), class: "a" %>
+                    <%else%>
+                        <%=link_to "#{User.find(recipe.user_id).email}", profile_path(User.find(recipe.user_id)), class: "a" %>
+                    <%end%>
+                    </small>
+                    <%# <%= link_to "Читать", recipe_path(recipe), class: "btn btn-outline-primary btn-sm"%> 
+                </div>
+        <% end%>
+    <%else%>
+        <h3 style="color: grey" class="text-center">По вашему запросу ничего не найдено<br><br>
+        <%=button_to "Вернуться на главную", root_path, class: "btn btn-outline-success", method: :get%></h3>
+        
+    <%end%>
+    </div>
+</div>

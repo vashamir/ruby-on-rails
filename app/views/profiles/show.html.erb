@@ -1,0 +1,43 @@
+<div style="margin-bottom: 50px">
+<h4>
+    <%if(@profile.nickname)%>
+        <h4><%= @profile.nickname %></h4>
+    <%else%>
+        <h4><%= @profile.email %></h4>
+    <%end%>
+
+    <%if(@profile.about_me)%>
+        <h5>Описание:</h5>
+        <p><%= @profile.about_me %><p>
+    <%end%>
+</h4>
+
+
+<% if (current_user)%>
+    <% if (current_user.id == @profile.id)%>
+        <%= link_to "Редактировать профиль", edit_profile_path(@profile), class: "btn btn-outline-success"%>
+    <%end%>
+<%end%>
+</div>
+<hr>
+
+<div class="container"><h4>Рецепты:</h4> </div>
+<div class="row">
+    <% @profile.recipes.each do |recipe| %>
+        
+        <div class = "col-md-4 text-left my-4">
+                    <%=link_to recipe_path(recipe) do%>
+                        <%= image_tag recipe.image.url(:thumb), class: 'img-show w-100' if recipe.image? %>
+                    <%end%>
+                    <%= link_to "#{recipe.title}", recipe_path(recipe), class: "a"%>
+                    <br>
+                    <small> Автор: 
+                    <%if(User.find(recipe.user_id).nickname)%>
+                        <%=link_to "#{User.find(recipe.user_id).nickname}", profile_path(User.find(recipe.user_id)), class: "a" %>
+                    <%else%>
+                        <%=link_to "#{User.find(recipe.user_id).email}", profile_path(User.find(recipe.user_id)), class: "a" %>
+                    <%end%>
+                    </small>
+        </div>
+    <% end%>
+</div>
